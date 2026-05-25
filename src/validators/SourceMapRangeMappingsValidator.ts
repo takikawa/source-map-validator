@@ -50,11 +50,10 @@ export class SourceMapRangeMappingsValidator extends Validator {
           const indices = this.parseRangeMappings(sourceMap.rangeMappings);
           // We assume mappings is correctly formatted due to previous checks
           const mappingLines = sourceMap.mappings.split(";");
-          if (indices.length > mappingLines.length) {
-            throw new Error("Invalid rangeMapping: lines in range mappings exceed lines in mappings");
-          }
           for (let line = 0; line < indices.length; line++) {
-            const mappingCount = mappingLines[line].split(",").length;
+            // The line in mappings (or mappings entirely) may be empty, in which case
+            // the count is zero and any range mapping into that line will be an error.
+            const mappingCount = mappingLines[line] ? mappingLines[line].split(",").length : 0;
             for (let rangeIndex = 0; rangeIndex < indices[line].length; rangeIndex++) {
               if (indices[line][rangeIndex] >= mappingCount) {
                 throw new Error("Invalid rangeMapping: out of range mapping on line " + line + " with index " + indices[line][rangeIndex]);

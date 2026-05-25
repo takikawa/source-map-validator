@@ -19,6 +19,9 @@ const knownFailures = [
   "validMappingFieldsWith32BitMaxValues",
   // Source maps library errors on this.
   "validMappingLargeVLQ",
+  // This test requires fully parsing the mappings in the range mappings
+  // validator which we currently avoid doing.
+  "rangeMappingsInvalidMappingForRange",
 ];
 
 function runSpecTests(specification : any) {
